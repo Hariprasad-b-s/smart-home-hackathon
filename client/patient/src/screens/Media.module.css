@@ -1,0 +1,109 @@
+.h1 {
+  font-size: var(--fs-3xl);
+  font-weight: 700;
+  line-height: 1.08;
+}
+.h1:focus {
+  outline: none;
+}
+.back {
+  align-self: flex-start;
+  margin-left: -10px;
+}
+.grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-2);
+}
+.tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface-sunken);
+  text-align: left;
+}
+.tile img,
+.tile video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.videoBadge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--brand-ink);
+  color: var(--bg);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+.meta {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+.date {
+  font-weight: 700;
+  font-size: var(--fs-sm);
+}
+.cap {
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.privacy {
+  text-align: center;
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+}
+.viewer img,
+.viewer video {
+  width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  background: var(--surface-sunken);
+  display: block;
+}
+.danger {
+  align-self: flex-start;
+  color: var(--concern);
+}
+.confirm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--radius-lg);
+  background: var(--concern-soft);
+  font-weight: 700;
+}
+.confirmRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+}
+.dangerBtn {
+  background: var(--concern);
+}
+.dangerBtn:hover:not(:disabled) {
+  background: var(--concern);
+}

@@ -1,0 +1,174 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(16, 24, 40, 0.32);
+}
+.panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(480px, 100vw);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  animation: slide-in 160ms ease-out;
+}
+@keyframes slide-in {
+  from { transform: translateX(24px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel { animation: none; }
+}
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-2);
+  border-bottom: 1px solid var(--border);
+}
+.nav { display: flex; }
+.title {
+  flex: 1;
+  margin: 0;
+  font-size: var(--fs-lg);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.muted { color: var(--text-3); font-size: var(--fs-sm); font-weight: 400; }
+.empty {
+  margin: 0;
+  padding: var(--sp-4);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text-2);
+}
+.tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.summary {
+  display: grid;
+  gap: var(--sp-2);
+  margin: 0;
+}
+.summary > div {
+  display: grid;
+  grid-template-columns: 9em 1fr;
+  gap: var(--sp-2);
+  align-items: baseline;
+}
+.summary dt { color: var(--text-3); font-size: var(--fs-sm); }
+.summary dd { margin: 0; }
+.changed {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: var(--sp-2);
+  flex-wrap: wrap;
+  color: var(--watch);
+  font-size: var(--fs-sm);
+}
+.seqStep { display: inline-flex; align-items: center; gap: 3px; }
+.warn { display: block; color: var(--watch); font-size: var(--fs-sm); }
+.chips { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+.sectionTitle {
+  margin: 0 0 var(--sp-2);
+  font-size: var(--fs-md);
+  font-weight: 650;
+}
+.doses {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+.doses li {
+  display: grid;
+  grid-template-columns: 5.5em 1fr auto;
+  gap: var(--sp-2);
+  align-items: center;
+}
+.doses time { color: var(--text-2); }
+.subs {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 14px;
+  border-left: 2px solid var(--border);
+  display: grid;
+  gap: var(--sp-3);
+}
+.sub {
+  position: relative;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.sub::before {
+  content: '';
+  position: absolute;
+  left: -21px;
+  top: 14px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border-strong);
+}
+.subUsed { border-color: var(--good); }
+.subUsed::before { border-color: var(--good); background: var(--good); }
+.subBlank { border-style: dashed; background: var(--surface-2); }
+.subHead {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+.subHead time { font-weight: 650; }
+.subTracker { color: var(--text-2); font-size: var(--fs-sm); }
+.answers {
+  margin: 6px 0 0;
+  display: grid;
+  gap: 2px;
+  font-size: var(--fs-sm);
+}
+.answers > div {
+  display: grid;
+  grid-template-columns: 8.5em 1fr;
+  gap: var(--sp-2);
+}
+.answers dt { color: var(--text-3); }
+.answers dd { margin: 0; }
+@media print {
+  .root { display: none; }
+}
+.mediaStrip { display: flex; gap: 8px; flex-wrap: wrap; }
+.voice {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--brand-purple-soft);
+  color: color-mix(in srgb, var(--brand-purple) 60%, var(--text));
+  font-size: var(--fs-xs);
+  font-weight: 650;
+}
+.subMedia { display: inline-flex; align-items: center; gap: 3px; font-size: var(--fs-xs); color: var(--text-2); }
+.transcript { margin-top: 6px; font-size: var(--fs-sm); }
+.transcript summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+.transcript blockquote { margin: 6px 0 4px; padding: 6px 10px; border-left: 3px solid var(--border-strong); font-style: italic; color: var(--text); }
+.transcript .muted { margin: 0; }

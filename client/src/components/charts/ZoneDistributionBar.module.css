@@ -1,0 +1,24 @@
+.bar {
+  display: flex;
+  gap: 2px;
+  height: 14px;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.seg {
+  flex-basis: 0;
+  min-width: 3px;
+  height: 100%;
+  transition: filter 80ms ease;
+}
+
+.seg:hover {
+  filter: brightness(1.08);
+}
+
+.unknown {
+  background: repeating-linear-gradient(45deg, var(--no-data) 0 3px, var(--border-strong) 3px 4px);
+}

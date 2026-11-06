@@ -1,0 +1,236 @@
+/* `.on` marks the selected state; styled per widget below. */
+
+/* yes / no */
+.yesNo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+.bigChoice {
+  min-height: 96px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.bigChoice.on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* face scale / icon choice */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+  gap: var(--sp-2);
+}
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 104px;
+  padding: 10px 6px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.12s ease;
+}
+.tile.on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-2px);
+}
+.tileIcon {
+  font-size: 40px;
+  line-height: 1;
+}
+.tileLabel {
+  font-weight: 700;
+  font-size: var(--fs-md);
+  text-align: center;
+}
+
+/* radio list */
+.radios {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.radio {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: 56px;
+  padding: 0 16px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  font-weight: 700;
+  cursor: pointer;
+}
+.radio input {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+.radio.on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.radio:has(input:focus-visible) {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* checkbox chips */
+.hint {
+  color: var(--text-2);
+  margin-bottom: var(--sp-3);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  font-weight: 700;
+}
+.chip.on {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--text-inverse);
+}
+.chipNone {
+  border-style: dashed;
+}
+.chipNone.on {
+  border-style: solid;
+}
+
+/* 1–10 scale */
+.scale {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--sp-2);
+}
+.scaleBtn {
+  min-height: 52px;
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.scaleBtn.on {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--text-inverse);
+}
+.scaleEnds {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--sp-2);
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+}
+@media (min-width: 400px) {
+  .scale {
+    grid-template-columns: repeat(10, 1fr);
+    gap: 4px;
+  }
+  .scaleBtn {
+    font-size: var(--fs-lg);
+  }
+}
+
+/* number stepper */
+.number {
+  display: grid;
+  grid-template-columns: 64px 1fr 64px;
+  align-items: center;
+  gap: var(--sp-3);
+}
+.stepBtn {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--accent);
+}
+.stepBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.numberField {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.numberInput {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  border-bottom: 3px solid var(--border-strong);
+  background: transparent;
+  text-align: center;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  padding: 4px 0;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.numberInput::-webkit-outer-spin-button,
+.numberInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.numberInput:focus-visible {
+  outline: none;
+  border-bottom-color: var(--focus);
+}
+.unit {
+  margin-top: 4px;
+  color: var(--text-2);
+  font-weight: 700;
+}
+.range {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--text-3);
+  font-size: var(--fs-md);
+}
+
+/* text */
+.textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border);
+  background: var(--surface);
+  resize: vertical;
+  line-height: 1.5;
+}
+.textarea:focus-visible {
+  outline: none;
+  border-color: var(--focus);
+}

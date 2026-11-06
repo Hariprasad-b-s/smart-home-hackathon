@@ -1,0 +1,94 @@
+.safety {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--sp-4);
+}
+.emergency {
+  background: var(--zone-red);
+  color: var(--text-inverse);
+}
+.urgent {
+  background: var(--zone-yellow-soft);
+  border-left: 6px solid var(--zone-yellow);
+  color: var(--text);
+}
+.title {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-xl);
+  font-weight: 700;
+}
+.message {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-top: var(--sp-1);
+}
+.call {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 20px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--concern);
+  font-weight: 700;
+  text-decoration: none;
+}
+.primary {
+  flex: 1 1 100%;
+  min-height: 56px;
+  font-size: var(--fs-xl);
+}
+.urgent .call {
+  background: var(--concern);
+  color: var(--text-inverse);
+}
+
+.chipWrap {
+  position: relative;
+  display: inline-flex;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-gradient);
+}
+.popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 30;
+  width: min(280px, 80vw);
+  padding: var(--sp-3);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+}

@@ -1,0 +1,219 @@
+.flow {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100dvh - 40px);
+}
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin: 0 -10px;
+}
+.trackerName {
+  font-weight: 700;
+  color: var(--text-2);
+  font-size: var(--fs-md);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.progress {
+  height: 8px;
+  margin: var(--sp-2) 0 var(--sp-5);
+  border-radius: 999px;
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+.progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--brand-gradient);
+  background-size: 440px 100%;
+  transition: width 0.3s ease;
+}
+.question {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  animation: enter 0.22s ease-out;
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+}
+.count {
+  color: var(--text-3);
+  font-weight: 700;
+  font-size: var(--fs-md);
+  margin-bottom: calc(var(--sp-3) * -1);
+}
+.qText {
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  line-height: 1.2;
+  max-width: 24ch;
+}
+.qText:focus {
+  outline: none;
+}
+.spiro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.linked {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-lg);
+  background: var(--good-soft);
+  color: var(--good);
+  font-weight: 700;
+}
+.actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-4) 0 calc(var(--sp-4) + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--bg) 75%, transparent);
+}
+.next {
+  flex: 1;
+  max-width: 220px;
+}
+
+/* review */
+.review {
+  list-style: none;
+}
+.reviewRow {
+  display: grid;
+  grid-template-columns: 1fr auto 18px;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  min-height: 56px;
+  padding: 10px 14px 10px 16px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  color: var(--text-3);
+}
+.reviewRow:hover {
+  background: var(--surface-2);
+}
+.reviewQ {
+  color: var(--text-2);
+  font-weight: 700;
+}
+.reviewA {
+  color: var(--text);
+  text-align: right;
+  font-weight: 700;
+  max-width: 55vw;
+}
+.skipped {
+  color: var(--text-3);
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* celebration */
+.done {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding-top: var(--sp-6);
+}
+.burst {
+  display: grid;
+  place-items: center;
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  background: var(--brand-gradient);
+  color: var(--text-inverse);
+  animation: pop 0.5s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+@keyframes pop {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+}
+.doneText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.doneTitle {
+  font-size: var(--fs-3xl);
+  font-weight: 700;
+  line-height: 1.1;
+}
+.doneTitle:focus {
+  outline: none;
+}
+.doneMsg {
+  font-size: var(--fs-xl);
+  color: var(--text-2);
+}
+.badge {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--radius-lg);
+  background: var(--brand-purple-soft);
+}
+.badgeIcon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--brand-purple);
+}
+.badgeKicker {
+  color: var(--text-2);
+  font-size: var(--fs-md);
+  font-weight: 700;
+}
+.badgeName {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+}
+.zone {
+  padding: var(--sp-4);
+  border-radius: var(--radius-lg);
+  border-left: 6px solid var(--zc);
+  background: var(--zs);
+}
+.z_yellow {
+  --zc: var(--zone-yellow);
+  --zs: var(--zone-yellow-soft);
+}
+.z_red {
+  --zc: var(--zone-red);
+  --zs: var(--zone-red-soft);
+}
+.zoneName {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+}
+.attach {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-3);
+}

@@ -1,0 +1,284 @@
+/* Shared chart chrome. Only tokens.css variables — no literal colors. */
+
+/*
+ * Chart-local series steps. tokens.css gives --series-1/2 no dark-mode step, and both are
+ * too dark on the dark surface, so in dark mode step them toward the text ink (still
+ * token-derived). Selector logic mirrors tokens.css.
+ */
+.root {
+  --chart-s1: var(--series-1);
+  --chart-s2: var(--series-2);
+}
+
+@media (prefers-color-scheme: dark) {
+  :global(:root:not([data-theme='light'])) .root {
+    --chart-s1: var(--accent);
+    --chart-s2: color-mix(in srgb, var(--series-2) 62%, var(--text));
+  }
+}
+
+:global(:root[data-theme='dark']) .root {
+  --chart-s1: var(--accent);
+  --chart-s2: color-mix(in srgb, var(--series-2) 62%, var(--text));
+}
+
+.root {
+  position: relative;
+  margin: 0;
+  min-width: 0;
+  width: 100%;
+  font-family: var(--font-sans);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.plot {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.svg {
+  display: block;
+  overflow: visible;
+  touch-action: pan-y;
+}
+
+.interactive {
+  border-radius: var(--radius-sm);
+  outline: none;
+  cursor: pointer;
+}
+
+.interactive:focus-visible {
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--focus);
+}
+
+.axisText {
+  fill: var(--axis);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.axisTitle {
+  fill: var(--text-3);
+  font-size: var(--fs-xs);
+}
+
+.rowLabel {
+  fill: var(--text-2);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 64px;
+  padding: var(--sp-3);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-3);
+  font-size: var(--fs-sm);
+  background: var(--surface-2);
+  text-align: center;
+}
+
+.caption {
+  margin-top: var(--sp-2);
+  color: var(--text-3);
+  font-size: var(--fs-xs);
+  line-height: 1.4;
+}
+
+/* ── tooltip ── */
+.tooltip {
+  position: absolute;
+  z-index: 20;
+  pointer-events: none;
+  min-width: 120px;
+  max-width: 260px;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--fs-xs);
+  line-height: 1.35;
+  color: var(--text-2);
+  white-space: normal;
+}
+
+.tooltipTitle {
+  font-weight: 600;
+  color: var(--text);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--sp-1);
+}
+
+.tooltipRow {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 1px 0;
+}
+
+.tooltipValue {
+  color: var(--text);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.tooltipLabel {
+  color: var(--text-3);
+}
+
+.keyLine {
+  flex: none;
+  width: 10px;
+  height: 2px;
+  border-radius: 1px;
+  align-self: center;
+}
+
+.keyDot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  align-self: center;
+}
+
+.keySpacer {
+  flex: none;
+  width: 0;
+}
+
+.tooltipNote {
+  margin-top: var(--sp-1);
+  color: var(--text-3);
+}
+
+.tooltipWarn {
+  margin-top: var(--sp-1);
+  color: var(--concern);
+  font-weight: 600;
+}
+
+/* ── legend ── */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1) var(--sp-3);
+  margin: var(--sp-2) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+}
+
+.legendLarge {
+  gap: var(--sp-2) var(--sp-5);
+  font-size: var(--fs-md);
+  color: var(--text);
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.legendCount {
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.legendLarge .legendCount {
+  color: var(--text-2);
+  font-weight: 600;
+}
+
+.swatch {
+  flex: none;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  box-sizing: border-box;
+}
+
+.legendLarge .swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.sw_fill {
+  background: var(--sw);
+}
+
+.sw_outline {
+  background: var(--surface);
+  border: 1.5px solid var(--sw);
+}
+
+.sw_half {
+  border: 1.5px solid var(--sw);
+  background: linear-gradient(to top, var(--sw) 50%, var(--surface) 50%);
+}
+
+.sw_nodata {
+  background: repeating-linear-gradient(45deg, var(--no-data) 0 3px, var(--border-strong) 3px 4px);
+}
+
+.sw_line {
+  height: 2px;
+  width: 14px;
+  border-radius: 1px;
+  background: var(--sw);
+}
+
+.sw_dashed {
+  height: 0;
+  width: 14px;
+  border-top: 2px dashed var(--sw);
+  border-radius: 0;
+}
+
+.sw_dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sw);
+}
+
+.sw_ring,
+.sw_hollowPoint {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid var(--sw);
+  background: var(--surface);
+}
+
+.visuallyHidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (forced-colors: active) {
+  .interactive:focus-visible {
+    outline: 2px solid Highlight;
+  }
+}

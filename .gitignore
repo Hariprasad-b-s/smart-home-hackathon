@@ -1,0 +1,12 @@
+node_modules/
+client/dist/
+server/data/generated/
+.DS_Store
+*.log
+server/data/synthea/output/
+tools/synthea/*.jar
+.dev/
+server/data/runtime/
+
+# Hackathon materials from Cincinnati Children's: local only, not redistributed
+docs/*.pdf

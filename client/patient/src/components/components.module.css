@@ -1,0 +1,250 @@
+/* ── Medicine row ─────────────────────────────────────────── */
+.med {
+  padding-bottom: 6px;
+}
+.wellDone {
+  background: var(--good-soft);
+  color: var(--good);
+}
+.slots {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 16px 10px 68px;
+}
+.slot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  min-height: 44px;
+}
+.slotTime {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.slotDone {
+  justify-content: flex-start;
+  gap: var(--sp-2);
+  color: var(--good);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.slotNote {
+  color: var(--text-2);
+  font-weight: 400;
+}
+.medNote {
+  padding: 0 16px 10px 68px;
+}
+
+/* ── Action-plan zone ─────────────────────────────────────── */
+.zone {
+  position: relative;
+  padding: 18px 18px 18px 22px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.zone::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: var(--zone-color, var(--border-strong));
+}
+.zone_green {
+  --zone-color: var(--zone-green);
+  background: var(--zone-green-soft);
+  border-color: transparent;
+}
+.zone_yellow {
+  --zone-color: var(--zone-yellow);
+  background: var(--zone-yellow-soft);
+  border-color: transparent;
+}
+.zone_red {
+  --zone-color: var(--zone-red);
+  background: var(--zone-red-soft);
+  border-color: transparent;
+}
+.zoneNone {
+  border-style: dashed;
+}
+.zoneHead {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+.zoneDot {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--zone-color);
+  box-shadow: 0 0 0 5px var(--surface);
+}
+.zoneName {
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  line-height: 1.1;
+}
+.zoneSub {
+  color: var(--text-2);
+  font-weight: 700;
+}
+.zoneMeta {
+  margin-top: var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-md);
+}
+.zoneSteps {
+  margin-top: var(--sp-3);
+}
+.zoneSteps ul {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 1.2em;
+}
+.planLine {
+  margin-top: var(--sp-3);
+  font-weight: 700;
+}
+
+/* ── 14-day strip ─────────────────────────────────────────── */
+.strip {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  gap: 4px;
+  padding: 4px;
+  margin: -4px;
+}
+.day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.dayDot {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: 22px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--dot, var(--no-data));
+  color: var(--text-inverse);
+  font-size: 11px;
+  font-weight: 700;
+}
+.stripLarge .dayDot {
+  max-width: 28px;
+}
+.day:last-child .dayDot {
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+}
+.day_good {
+  --dot: var(--sev-0);
+}
+.day_hard {
+  --dot: var(--sev-2);
+}
+.day_none {
+  --dot: var(--no-data);
+}
+.dayLabel {
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-top: var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+.legendDot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--dot);
+  margin-left: 6px;
+}
+.legendDot:first-child {
+  margin-left: 0;
+}
+
+/* ── Streak & badges ──────────────────────────────────────── */
+.streak {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+.flame {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--brand-magenta-soft);
+  color: var(--brand-magenta);
+}
+.streakNum {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+}
+.badges {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--sp-2);
+}
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.badgeIcon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--brand-purple-soft);
+  color: var(--brand-purple);
+}
+.badgeLabel {
+  display: block;
+  font-weight: 700;
+  font-size: var(--fs-md);
+  line-height: 1.25;
+}
+.badgeDate {
+  display: block;
+  font-size: var(--fs-sm);
+  color: var(--text-3);
+}
+
+:global([data-theme='dark']) .badgeIcon,
+:global([data-theme='dark']) .flame {
+  color: var(--text);
+}
+@media (prefers-color-scheme: dark) {
+  :global(:root:not([data-theme='light'])) .badgeIcon,
+  :global(:root:not([data-theme='light'])) .flame {
+    color: var(--text);
+  }
+}

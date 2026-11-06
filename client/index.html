@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="SMART@Home clinician view: a pre-visit summary of home-monitoring data (synthetic demo data)." />
+    <meta name="color-scheme" content="light dark" />
+    <title>SMART@Home Clinician View</title>
+    <script>
+      // Apply the saved colour theme before first paint (see src/lib/theme.ts).
+      try {
+        var t = localStorage.getItem('smart-home-theme');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.dataset.theme = t;
+          var m = document.querySelector('meta[name="color-scheme"]');
+          if (m) m.setAttribute('content', t);
+        }
+      } catch (e) {}
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

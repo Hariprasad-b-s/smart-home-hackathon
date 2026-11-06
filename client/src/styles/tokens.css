@@ -1,0 +1,179 @@
+/*
+ * DESIGN TOKENS — CONTRACT. Palette inspired by Cincinnati Children's brand colors
+ * (magenta → purple → sky blue → lime band on the Innovation Ventures one-pager).
+ * Approximations for a hackathon prototype — not official brand values; do not
+ * reproduce the hospital logo. All modules use these CSS variables; no hard-coded colors.
+ * Clinical conventions: zone colors are fixed green/yellow/red; status colors are always
+ * paired with an icon or text (never color alone).
+ */
+:root {
+  color-scheme: light;
+  /* surfaces */
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --surface-2: #f8fafb;
+  --surface-sunken: #eef1f4;
+  --border: #dde3e9;
+  --border-strong: #c3ccd5;
+  /* text */
+  --text: #17212b;
+  --text-2: #4a5866;
+  --text-3: #6f7d8b;
+  --text-inverse: #ffffff;
+  /* brand / interactive */
+  --accent: #1d5c8f; /* deep CCHMC-style blue for interactive elements */
+  --accent-hover: #164a74;
+  --accent-soft: #e4eef7;
+  --focus: #2f7de1;
+  /* brand (Cincinnati Children's–inspired) */
+  --brand-ink: #1f2a44; /* headings / app bar */
+  --brand-magenta: #d4246f;
+  --brand-purple: #6b3fa0;
+  --brand-sky: #3fb0e3;
+  --brand-lime: #8cc63f;
+  --brand-orange: #f39a1f;
+  --brand-magenta-soft: #fbe6ef;
+  --brand-purple-soft: #efe8f7;
+  --brand-gradient: linear-gradient(90deg, #d4246f 0%, #a2368f 28%, #6b3fa0 45%, #3fb0e3 72%, #8cc63f 100%);
+  /* status */
+  --good: #1f8a4c;
+  --good-soft: #e3f4ea;
+  --watch: #b26b00;
+  --watch-soft: #fdf0d9;
+  --concern: #c2362b;
+  --concern-soft: #fbe4e1;
+  --neutral: #5b6b7b;
+  --neutral-soft: #eceff2;
+  --unknown: #9aa6b2;
+  /* action plan zones (fills for cells/bands) */
+  --zone-green: #3fa66b;
+  --zone-green-soft: #dcf1e4;
+  --zone-yellow: #e6b325;
+  --zone-yellow-soft: #fbf1cf;
+  --zone-red: #d9493b;
+  --zone-red-soft: #f9dcd8;
+  --no-data: #e7ebef;
+  /* categorical series (charts) */
+  --series-1: #1d5c8f; /* blue */
+  --series-2: #6b3fa0; /* purple */
+  --series-3: #d4246f; /* magenta */
+  --series-4: #2b9fd3; /* sky */
+  --series-5: #d98512; /* orange */
+  --series-6: #5f8f2a; /* lime (darkened for contrast) */
+  /* severity ramp 0..3 (feeling / symptom intensity) */
+  --sev-0: #3fa66b;
+  --sev-1: #a7c94a;
+  --sev-2: #e6a325;
+  --sev-3: #d9493b;
+  /* chart chrome */
+  --grid: #e8ecf0;
+  --axis: #8896a4;
+  /* type */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --fs-xs: 11px;
+  --fs-sm: 12.5px;
+  --fs-md: 14px;
+  --fs-lg: 16px;
+  --fs-xl: 20px;
+  --fs-2xl: 26px;
+  --fs-3xl: 34px;
+  /* spacing & shape */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-lg: 0 12px 32px rgba(16, 24, 40, 0.14);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --bg: #0f1419;
+    --surface: #171e25;
+    --surface-2: #1c242c;
+    --surface-sunken: #121920;
+    --border: #2a343e;
+    --border-strong: #3a4652;
+    --text: #e6ebf0;
+    --text-2: #b0bcc8;
+    --text-3: #8492a0;
+    --accent: #6fb0e6;
+    --accent-hover: #8cc2ee;
+    --accent-soft: #172b3d;
+    --brand-ink: #e6ebf0;
+    --brand-magenta-soft: #3a1726;
+    --brand-purple-soft: #2a1f3a;
+    --good: #4cc27c;
+    --good-soft: #163324;
+    --watch: #e9a23b;
+    --watch-soft: #3a2a10;
+    --concern: #f0675a;
+    --concern-soft: #3d1c19;
+    --neutral: #93a3b3;
+    --neutral-soft: #222b34;
+    --zone-green: #3fa66b;
+    --zone-green-soft: #173525;
+    --zone-yellow: #d9a520;
+    --zone-yellow-soft: #3a3113;
+    --zone-red: #e05a4c;
+    --zone-red-soft: #3d1d1a;
+    --no-data: #232c35;
+    --series-1: #6fb0e6;
+    --series-2: #a98ad8;
+    --series-3: #ec6aa1;
+    --series-4: #5cc4ef;
+    --series-5: #f0a947;
+    --series-6: #9fd067;
+    --grid: #26303a;
+    --axis: #6f7e8c;
+  }
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0f1419;
+  --surface: #171e25;
+  --surface-2: #1c242c;
+  --surface-sunken: #121920;
+  --border: #2a343e;
+  --border-strong: #3a4652;
+  --text: #e6ebf0;
+  --text-2: #b0bcc8;
+  --text-3: #8492a0;
+  --accent: #6fb0e6;
+  --accent-hover: #8cc2ee;
+  --accent-soft: #172b3d;
+  --brand-ink: #e6ebf0;
+  --brand-magenta-soft: #3a1726;
+  --brand-purple-soft: #2a1f3a;
+  --good: #4cc27c;
+  --good-soft: #163324;
+  --watch: #e9a23b;
+  --watch-soft: #3a2a10;
+  --concern: #f0675a;
+  --concern-soft: #3d1c19;
+  --neutral: #93a3b3;
+  --neutral-soft: #222b34;
+  --zone-green: #3fa66b;
+  --zone-green-soft: #173525;
+  --zone-yellow: #d9a520;
+  --zone-yellow-soft: #3a3113;
+  --zone-red: #e05a4c;
+  --zone-red-soft: #3d1d1a;
+  --no-data: #232c35;
+  --series-1: #6fb0e6;
+  --series-2: #a98ad8;
+  --series-3: #ec6aa1;
+  --series-4: #5cc4ef;
+  --series-5: #f0a947;
+  --series-6: #9fd067;
+  --grid: #26303a;
+  --axis: #6f7e8c;
+}

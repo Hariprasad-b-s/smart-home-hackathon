@@ -1,0 +1,246 @@
+.widget {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px var(--sp-2);
+}
+
+.title {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.answered {
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.fullText {
+  flex-basis: 100%;
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.compact .title {
+  font-size: var(--fs-sm);
+}
+
+.relative {
+  position: relative;
+}
+
+.stack {
+  display: flex;
+  gap: 2px;
+  height: 14px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.seg {
+  flex-basis: 0;
+  min-width: 3px;
+  height: 100%;
+}
+
+.seg:hover {
+  filter: brightness(1.08);
+}
+
+.strip {
+  margin-top: var(--sp-1);
+}
+
+.figureLine {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.figureLine strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.muted {
+  color: var(--text-3);
+  font-size: var(--fs-xs);
+  margin: 0;
+}
+
+/* multi-select frequency bars */
+.freq {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(72px, max-content) minmax(40px, 1fr) max-content;
+  gap: 5px var(--sp-2);
+  align-items: center;
+  font-size: var(--fs-xs);
+}
+
+.freqRow {
+  display: contents;
+}
+
+.freqLabel {
+  color: var(--text-2);
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.track {
+  position: relative;
+  display: block;
+  height: 10px;
+  border-radius: 0 4px 4px 0;
+  background: var(--surface-sunken);
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  border-radius: 0 4px 4px 0;
+  background: var(--series-2);
+}
+
+.freqValue {
+  color: var(--text);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.freqValue .muted {
+  font-weight: 400;
+}
+
+/* numeric stats */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1) var(--sp-4);
+  margin: 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.stat dt {
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+}
+
+.stat dd {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat dd.warn {
+  color: var(--concern);
+}
+
+/* boolean */
+.bigFigure {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  margin: 0;
+}
+
+.bigNum {
+  font-size: var(--fs-2xl);
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+
+.compact .bigNum {
+  font-size: var(--fs-xl);
+}
+
+.bigOf {
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+/* text */
+.textList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.textItem {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: baseline;
+  font-size: var(--fs-sm);
+  padding: var(--sp-1) 0;
+  border-bottom: 1px solid var(--grid);
+}
+
+.textItem:last-child {
+  border-bottom: 0;
+}
+
+.date,
+.dateBtn {
+  flex: none;
+  min-width: 48px;
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.dateBtn {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  color: var(--accent);
+  cursor: pointer;
+  text-align: left;
+  border-radius: 3px;
+}
+
+.dateBtn:hover {
+  text-decoration: underline;
+}
+
+.dateBtn:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.textBody {
+  color: var(--text);
+  overflow-wrap: anywhere;
+}

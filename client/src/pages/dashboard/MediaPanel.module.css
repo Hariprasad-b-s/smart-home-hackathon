@@ -1,0 +1,16 @@
+.group + .group { margin-top: var(--sp-4); }
+.date { margin: 0 0 8px; font-size: var(--fs-sm); font-weight: 650; color: var(--text-2); }
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--sp-3);
+}
+.item { min-width: 0; }
+.caption { margin: 4px 0 0; font-size: var(--fs-sm); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.meta { margin: 0; display: flex; gap: 8px; flex-wrap: wrap; font-size: var(--fs-xs); color: var(--text-3); }
+.link { border: 0; background: none; padding: 0; color: var(--accent); font-size: var(--fs-xs); font-weight: 600; cursor: pointer; text-decoration: none; }
+.link:hover { text-decoration: underline; }
+.muted { color: var(--text-3); font-size: var(--fs-sm); margin: 0; }
