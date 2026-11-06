@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMART@Home Clinician View</title>
+<meta name="description" content="A two-minute pre-visit view of SMART@Home home-monitoring data, plus a companion patient app. Digital Health Hackathon 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f4f6f8;
+    --surface: #ffffff;
+    --surface-2: #f8fafb;
+    --border: #dde3e9;
+    --text: #17212b;
+    --text-2: #4a5866;
+    --text-3: #6f7d8b;
+    --accent: #1d5c8f;
+    --accent-soft: #e4eef7;
+    --magenta: #d4246f;
+    --purple: #6b3fa0;
+    --sky: #3fb0e3;
+    --lime: #8cc63f;
+    --good: #1f8a4c;
+    --watch: #b26b00;
+    --concern: #c2362b;
+    --concern-soft: #fbe4e1;
+    --gradient: linear-gradient(90deg, #d4246f 0%, #a2368f 28%, #6b3fa0 45%, #3fb0e3 72%, #8cc63f 100%);
+    --shadow: 0 1px 3px rgba(16, 24, 40, .08), 0 8px 24px rgba(16, 24, 40, .06);
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0f1419; --surface: #171e25; --surface-2: #1c242c; --border: #2a343e;
+      --text: #e6ebf0; --text-2: #b0bcc8; --text-3: #8492a0;
+      --accent: #6fb0e6; --accent-soft: #172b3d; --concern-soft: #3d1c19;
+      --shadow: 0 1px 3px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0f1419; --surface: #171e25; --surface-2: #1c242c; --border: #2a343e;
+    --text: #e6ebf0; --text-2: #b0bcc8; --text-3: #8492a0;
+    --accent: #6fb0e6; --accent-soft: #172b3d; --concern-soft: #3d1c19;
+    --shadow: 0 1px 3px rgba(0,0,0,.4);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.6 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  a { color: var(--accent); }
+  .band { height: 5px; background: var(--gradient); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 720px) { .wrap { padding: 0 32px; } }
+
+  /* Hero */
+  header.hero { padding: 56px 0 40px; }
+  .eyebrow { display: inline-flex; gap: 8px; align-items: center; font-size: 13px; font-weight: 600; letter-spacing: .02em; color: var(--text-2); background: var(--surface); border: 1px solid var(--border); padding: 6px 12px; border-radius: 999px; }
+  .eyebrow i { width: 8px; height: 8px; border-radius: 50%; background: var(--gradient); display: inline-block; }
+  h1 { font-size: clamp(34px, 6vw, 56px); line-height: 1.05; letter-spacing: -.02em; margin: 20px 0 16px; font-weight: 800; }
+  h1 span { background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lede { font-size: clamp(18px, 2.2vw, 21px); color: var(--text-2); max-width: 760px; margin: 0 0 28px; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 999px; font-weight: 600; text-decoration: none; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
+  .hero-shot { margin-top: 40px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow); background: var(--surface); }
+
+  section { padding: 48px 0; }
+  h2 { font-size: clamp(26px, 3.4vw, 34px); letter-spacing: -.01em; line-height: 1.15; margin: 0 0 12px; }
+  .kicker { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--magenta); margin: 0 0 8px; }
+  .sub { color: var(--text-2); max-width: 760px; margin: 0 0 28px; }
+
+  .grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .grid.c2 { grid-template-columns: repeat(2, 1fr); } .grid.c3 { grid-template-columns: repeat(3, 1fr); } }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+  .card h3 { margin: 0 0 8px; font-size: 18px; }
+  .card p { margin: 0; color: var(--text-2); }
+  .card ul { margin: 8px 0 0; padding-left: 20px; color: var(--text-2); }
+  .card li { margin: 4px 0; }
+  .pill { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin-bottom: 10px; }
+  .pill.bad { background: var(--concern-soft); color: var(--concern); }
+  .pill.good { background: var(--accent-soft); color: var(--accent); }
+
+  .contrast { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .contrast { grid-template-columns: 1fr 1fr; } }
+  .contrast .card { border-top: 4px solid var(--watch); }
+  .contrast .card.b { border-top-color: var(--concern); }
+  .big { font-size: 40px; font-weight: 800; line-height: 1; margin: 6px 0 10px; }
+
+  /* Screens */
+  figure { margin: 0; }
+  .shot { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+  /* Desktop screenshots share one shape so gallery rows line up (cropped from the bottom). */
+  .grid.c2 .shot img { aspect-ratio: 16 / 11; object-fit: cover; object-position: top; width: 100%; }
+  figcaption { padding: 12px 4px 0; color: var(--text-2); font-size: 15px; }
+  figcaption b { color: var(--text); }
+  .phones { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+  .phones .shot { border-radius: 26px; max-width: 320px; margin: 0 auto; }
+
+  /* Loop */
+  .loop { display: grid; gap: 12px; grid-template-columns: 1fr; counter-reset: s; }
+  @media (min-width: 900px) { .loop { grid-template-columns: repeat(4, 1fr); } }
+  .step { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 18px 18px 60px; box-shadow: var(--shadow); }
+  .step::before { counter-increment: s; content: counter(s); position: absolute; left: 16px; top: 16px; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; color: #fff; background: var(--accent); }
+  .step b { display: block; margin-bottom: 4px; }
+  .step span { color: var(--text-2); font-size: 15px; }
+
+  .facts { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+  .fact { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+  .fact b { display: block; font-size: 15px; }
+  .fact span { color: var(--text-2); font-size: 14px; }
+
+  .note { background: var(--surface-2); border: 1px dashed var(--border); border-radius: 12px; padding: 16px 18px; color: var(--text-2); font-size: 15px; }
+  footer { padding: 40px 0 56px; color: var(--text-3); font-size: 14px; border-top: 1px solid var(--border); margin-top: 24px; }
+  footer a { color: var(--text-2); }
+  .theme { position: fixed; right: 16px; bottom: 16px; z-index: 5; }
+  .theme button { font: inherit; font-size: 13px; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; box-shadow: var(--shadow); }
+</style>
+</head>
+<body>
+<div class="band" aria-hidden="true"></div>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="eyebrow"><i></i> Digital Health Hackathon 2026 · SMART@Home Clinician Data-View Challenge</span>
+    <h1>SMART@Home <span>Clinician View</span></h1>
+    <p class="lede">Teens already log their asthma, migraine and IBD at home in SMART@Home. We turned that raw log into a
+      <strong>two-minute pre-visit answer</strong>: is the treatment not working, or just not being taken? We also made
+      it easier for patients to send the data in the first place.</p>
+    <div class="ctas">
+      <a class="btn primary" href="https://github.com/Hariprasad-b-s/smart-home-hackathon">View the code on GitHub</a>
+      <a class="btn" href="https://github.com/Hariprasad-b-s/smart-home-hackathon/blob/main/docs/WALKTHROUGH.md">Step-by-step walkthrough</a>
+      <a class="btn" href="#loop">See the full loop</a>
+    </div>
+    <div class="hero-shot"><img src="images/clinician-dashboard.png" alt="Clinician dashboard for a patient: zone, lung function, controller adherence, rescue inhaler use, symptom days and night waking, each with a trend and sparkline" width="1440" height="900"></div>
+  </header>
+
+  <section aria-labelledby="problem">
+    <p class="kicker">The problem</p>
+    <h2 id="problem">The data arrives. Clinicians can't use it.</h2>
+    <p class="sub">Clinicians see 5–30 patients a day and look at home data in the minute before a visit. Today the portal
+      shows one row per submission, which leaves clinicians asking:</p>
+    <div class="grid c3">
+      <div class="card"><span class="pill bad">Raw log, no summary</span><h3>How did the last month go?</h3><p>Answering means reading every row and counting by hand: no trends, no flags, no date filters.</p></div>
+      <div class="card"><span class="pill bad">Contradictions hidden</span><h3>"Great" next to wheezing</h3><p>Answers change within minutes, repeat entries aren't combined, and the spirometry column is empty even though readings exist.</p></div>
+      <div class="card"><span class="pill bad">Medication invisible</span><h3>Is it being taken?</h3><p>Doses link to medicines by random IDs, and the "last logged" date is wrong. Clinicians can't tell a failing treatment from an untaken one.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="answer">
+    <p class="kicker">The answer</p>
+    <h2 id="answer">Same disease. Opposite actions.</h2>
+    <p class="sub">The patient list is sorted by who needs attention, using NAEPP asthma-control thresholds. It also separates
+      the two situations that need different decisions:</p>
+    <div class="contrast">
+      <div class="card b"><span class="pill bad">Not being taken</span><div class="big">42%</div><h3>Controller adherence, uncontrolled asthma</h3><p>Rescue inhaler 4 days a week and peak flow falling. <strong>Fix adherence before escalating.</strong></p></div>
+      <div class="card"><span class="pill good">Not working</span><div class="big">93%</div><h3>Controller adherence, still symptomatic</h3><p>Symptoms 3 days a week and lung function down 6%. <strong>Consider checking technique or stepping up.</strong></p></div>
+    </div>
+    <figure style="margin-top:24px">
+      <div class="shot"><img src="images/clinician-patients.png" alt="Patient list sorted by attention, with zone, adherence, symptom days, flags and last activity" loading="lazy" width="1440" height="900"></div>
+      <figcaption><b>Triage list.</b> Patients who stopped logging are flagged as "no activity", so missing data is never read as "fine" and adherence is measured only while the patient is using the app.</figcaption>
+    </figure>
+  </section>
+
+  <section aria-labelledby="clinician">
+    <p class="kicker">Clinician view</p>
+    <h2 id="clinician">The 30-second answer, then the evidence</h2>
+    <p class="sub">Headline metrics with trends and plain-language "how is this calculated", then a calendar, a timeline that
+      lines up symptoms, doses, rescue use and peak flow on one axis, adherence strips, spirometry in clinical units, and a
+      chart for every tracker question. It works for any condition and offers views for pulmonology, primary care, nursing,
+      neurology and GI.</p>
+    <div class="grid c2">
+      <figure><div class="shot"><img src="images/clinician-day-drawer.png" alt="Day drawer showing zone, feeling changing from Good to Bad, symptoms, doses, spirometry and every submission" loading="lazy" width="1440" height="1000"></div>
+        <figcaption><b>Any day, fully explained.</b> Every submission in order, which answer counted, doses, the latest spirometry, photos, and spoken check-ins with the transcript.</figcaption></figure>
+      <figure><div class="shot"><img src="images/clinician-visit-settings.png" alt="Visit mode settings: toggles for what the patient will see" loading="lazy" width="1440" height="1100"></div>
+        <figcaption><b>Visit mode the clinician controls.</b> Choose which talking points the teen sees, for this visit or as your default, then turn the screen around.</figcaption></figure>
+      <figure><div class="shot"><img src="images/clinician-edit-mode.png" alt="Edit mode with drag handles, move and hide controls on dashboard sections" loading="lazy" width="1440" height="1100"></div>
+        <figcaption><b>Your layout, every patient.</b> Reorder, hide or resize sections. Layouts are saved per clinician and per specialty view.</figcaption></figure>
+      <figure><div class="shot"><img src="images/clinician-conversation.png" alt="Clinician conversation view with the full AI helper chat, escalation summary and a 14-day patient snapshot" loading="lazy" width="1440" height="1000"></div>
+        <figcaption><b>Hand-offs with context.</b> When the AI helper escalates, the clinician sees the whole chat, an AI summary, and the patient's last 14 days, including today's spoken check-in.</figcaption></figure>
+    </div>
+  </section>
+
+  <section aria-labelledby="patient">
+    <p class="kicker">Patient app</p>
+    <h2 id="patient">Easier to send good data</h2>
+    <p class="sub">When a teen feels awful, tapping through seven questions is the last thing they'll do. So they can just
+      talk, add a photo, or ask for help.</p>
+    <div class="phones">
+      <figure><div class="shot"><img src="images/patient-today.png" alt="Patient Today screen with zone card, check-in, breathing test, medicines and streak" loading="lazy" width="780" height="1688"></div>
+        <figcaption><b>Today.</b> Their zone and action-plan steps, one-tap doses, streaks and badges.</figcaption></figure>
+      <figure><div class="shot"><img src="images/patient-voice-review.png" alt="Answers filled in from speech, each with a 'You said' quote and confidence" loading="lazy" width="780" height="1688"></div>
+        <figcaption><b>Just talk.</b> Speech becomes structured answers, each with the quote it came from. The patient confirms before sending.</figcaption></figure>
+      <figure><div class="shot"><img src="images/patient-breathing-result.png" alt="Breathing test result showing best blow, percent of personal best and red-zone steps" loading="lazy" width="780" height="1688"></div>
+        <figcaption><b>Home spirometry.</b> A coached Spirobank session, with the result and zone steps in plain language.</figcaption></figure>
+      <figure><div class="shot"><img src="images/patient-safety.png" alt="Emergency card with Call 911 after the patient writes they can't breathe" loading="lazy" width="780" height="1688"></div>
+        <figcaption><b>Safety first.</b> Emergency language skips the AI: a 911 card and an urgent alert to the care team.</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="loop" aria-labelledby="loop-h">
+    <p class="kicker">Closing the loop</p>
+    <h2 id="loop-h">From the teen's phone to the clinician, and back</h2>
+    <div class="loop">
+      <div class="step"><b>Patient speaks a check-in</b><span>"Chest is tight since gym class, used my albuterol twice." Answers are filled in, then confirmed.</span></div>
+      <div class="step"><b>Stored as FHIR R4</b><span>QuestionnaireResponse, MedicationAdministration, Observation and Media, in Synthea-style bundles.</span></div>
+      <div class="step"><b>Clinician sees it</b><span>Zone, trends and the day drawer update, and the transcript and photo are attached.</span></div>
+      <div class="step"><b>Questions reach a person</b><span>The AI helper hands off, the clinician replies, and the answer appears live on the phone.</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="depth">
+    <p class="kicker">Under the hood</p>
+    <h2 id="depth">Built on SMART@Home's real data model</h2>
+    <div class="facts">
+      <div class="fact"><b>Reads the existing Cosmos JSON</b><span>Handles string-encoded answers, repeat submissions, UUID-linked doses and archived duplicates.</span></div>
+      <div class="fact"><b>Any tracker</b><span>Question "roles" plus generic charts. Demo covers asthma, migraine and IBD.</span></div>
+      <div class="fact"><b>Clinical rules</b><span>NAEPP/EPR-3 control. A red reading is never hidden by a good one. Not logging ≠ not taking.</span></div>
+      <div class="fact"><b>FHIR R4, Synthea-seeded</b><span>EHR background from Synthea; patient entries stored as FHIR; lossless round trip.</span></div>
+      <div class="fact"><b>Claude, with guardrails</b><span>Structured extraction and a helper that escalates. Deterministic safety screen first, with a rules fallback.</span></div>
+      <div class="fact"><b>Tested</b><span>490 automated tests plus browser end-to-end tests of every flow shown here.</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="next">
+    <p class="kicker">What's next</p>
+    <h2 id="next">Ready for a pilot</h2>
+    <div class="grid c3">
+      <div class="card"><h3>Usability with clinicians</h3><p>Sessions with the asthma study team to tune thresholds, wording and the default views.</p></div>
+      <div class="card"><h3>Inside Epic</h3><p>Launch as the existing SMART@Home tab via SMART on FHIR; the data is already FHIR R4.</p></div>
+      <div class="card"><h3>Production AI</h3><p>A HIPAA-eligible deployment under a BAA, clinical review of the helper, and patient consent for voice.</p></div>
+    </div>
+    <p class="note" style="margin-top:24px"><strong>Demo only.</strong> Every patient is synthetic (demographics and EHR history generated with Synthea, plus scripted home data). The AI features are not medical advice. Hackathon materials from Cincinnati Children's are not redistributed here.</p>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    SMART@Home Clinician View · Digital Health Hackathon 2026 ·
+    <a href="https://github.com/Hariprasad-b-s/smart-home-hackathon">GitHub</a> ·
+    <a href="https://github.com/Hariprasad-b-s/smart-home-hackathon/blob/main/docs/WALKTHROUGH.md">Walkthrough</a>
+  </div>
+</footer>
+
+<div class="theme"><button type="button" id="themeBtn" aria-label="Switch color theme">Theme: auto</button></div>
+<script>
+  (function () {
+    var order = ['auto', 'light', 'dark'], i = 0, btn = document.getElementById('themeBtn');
+    try { var saved = localStorage.getItem('showcase-theme'); if (saved) i = Math.max(0, order.indexOf(saved)); } catch (e) {}
+    function apply() {
+      var t = order[i];
+      if (t === 'auto') document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme', t);
+      btn.textContent = 'Theme: ' + t;
+      try { localStorage.setItem('showcase-theme', t); } catch (e) {}
+    }
+    btn.addEventListener('click', function () { i = (i + 1) % order.length; apply(); });
+    apply();
+  })();
+</script>
+</body>
+</html>
