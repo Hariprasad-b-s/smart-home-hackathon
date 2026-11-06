@@ -24,6 +24,8 @@ Patient entries are stored as **Synthea-format FHIR R4** and appear in the clini
 
 > All data in this repository is **synthetic**. Never load real patient data into this app or into an AI tool.
 
+**New here?** See the [walkthrough](docs/WALKTHROUGH.md) for a guided tour of both apps.
+
 ## Quick start
 
 ```bash

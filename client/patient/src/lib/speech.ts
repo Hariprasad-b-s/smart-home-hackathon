@@ -45,12 +45,39 @@ export function getSpeechRecognition(): SpeechCtor | null {
 
 export type SpeechState = 'idle' | 'listening' | 'paused' | 'error';
 
-const ERROR_TEXT: Record<string, string> = {
-  'not-allowed': 'Your browser blocked the microphone. You can allow it in your browser settings, or type instead.',
-  'service-not-allowed': 'Voice typing is turned off in this browser. You can type instead.',
-  'audio-capture': "We couldn't find a microphone. You can type instead.",
-  network: 'Voice typing needs an internet connection. You can type instead.',
-};
+const isMac = typeof navigator !== 'undefined' && /Mac/i.test(navigator.platform || navigator.userAgent);
+const OS_MIC_TIP = isMac
+  ? ' On a Mac, also check System Settings → Privacy & Security → Microphone and turn your browser on.'
+  : ' Also check that your device lets this browser use the microphone.';
+
+/** Brave and some other Chromium browsers expose the API but block Google's speech service. */
+function browserNote(): string {
+  const nav = typeof navigator !== 'undefined' ? (navigator as Navigator & { brave?: unknown }) : undefined;
+  if (nav?.brave) return 'Brave blocks voice typing.';
+  return 'This browser could not reach its voice-typing service (Brave, Arc and some other browsers block it).';
+}
+
+function errorText(code: string): string {
+  switch (code) {
+    case 'not-allowed':
+      return `Microphone access is blocked for this site. Allow it from the lock icon in the address bar, then try again.${OS_MIC_TIP}`;
+    case 'service-not-allowed':
+      return 'Voice typing is turned off in this browser. In Safari, turn on Dictation (System Settings → Keyboard → Dictation). Or type instead.';
+    case 'audio-capture':
+      return `We couldn't use a microphone. Check that one is connected and selected.${OS_MIC_TIP}`;
+    case 'network':
+      return `${browserNote()} Try Google Chrome, Microsoft Edge or Safari, or type instead.`;
+    case 'insecure-context':
+      return 'Voice typing only works on a secure page (https:// or localhost). Open the app at an https address, or type instead.';
+    case 'language-not-supported':
+      return 'Voice typing does not support your browser language. Type instead, or switch the browser language to English.';
+    default:
+      return 'Voice typing stopped. Try again, or type instead.';
+  }
+}
+
+/** Shown while listening when the browser keeps hearing nothing. */
+export const NO_SPEECH_HINT = `We can't hear you yet. Speak a little closer, and check the right microphone is selected.${OS_MIC_TIP}`;
 
 export function useSpeech() {
   const Ctor = getSpeechRecognition();
@@ -60,8 +87,13 @@ export function useSpeech() {
   const [speaking, setSpeaking] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [blocked, setBlocked] = useState(false);
+  /** Raw SpeechRecognition error code (for diagnostics). */
+  const [errorCode, setErrorCode] = useState<string | null>(null);
+  /** Set after repeated silence with no words recognised. */
+  const [hint, setHint] = useState<string | null>(null);
   const rec = useRef<SpeechRecognitionLike | null>(null);
   const want = useRef(false);
+  const silentSessions = useRef(0);
 
   const ensure = useCallback(() => {
     if (!Ctor) return null;
@@ -81,24 +113,44 @@ export function useSpeech() {
       }
       if (fin) setFinalText((t) => joinText(t, fin));
       setInterim(tmp);
+      if (fin || tmp) {
+        silentSessions.current = 0;
+        setHint(null);
+      }
     };
     r.onerror = (e) => {
-      if (e.error === 'no-speech' || e.error === 'aborted') return; // harmless; onend restarts
+      if (e.error === 'aborted') return;
+      if (e.error === 'no-speech') {
+        // Chrome ends the session after a few seconds of silence; onend restarts it. If that keeps
+        // happening, no sound is reaching the browser: say so instead of "Listening…" forever.
+        silentSessions.current += 1;
+        if (silentSessions.current >= 2) setHint(NO_SPEECH_HINT);
+        return;
+      }
       want.current = false;
-      if (e.error === 'not-allowed' || e.error === 'service-not-allowed' || e.error === 'audio-capture') setBlocked(true);
-      setError(ERROR_TEXT[e.error] ?? 'Voice typing stopped. Try again, or type instead.');
+      if (e.error === 'not-allowed' || e.error === 'service-not-allowed' || e.error === 'audio-capture' || e.error === 'network') setBlocked(true);
+      setErrorCode(e.error);
+      setError(errorText(e.error));
       setState('error');
     };
     r.onend = () => {
       setInterim('');
       setSpeaking(false);
-      if (want.current) {
+      if (!want.current) return;
+      // Restart after a short delay: an immediate start() inside onend can throw InvalidStateError.
+      const restart = (attempt: number) => {
+        if (!want.current) return;
         try {
           r.start();
         } catch {
-          /* already started */
+          if (attempt < 3) window.setTimeout(() => restart(attempt + 1), 400);
+          else {
+            want.current = false;
+            setState('paused');
+          }
         }
-      }
+      };
+      window.setTimeout(() => restart(1), 150);
     };
     r.onspeechstart = () => setSpeaking(true);
     r.onspeechend = () => setSpeaking(false);
@@ -109,7 +161,18 @@ export function useSpeech() {
   const start = useCallback(() => {
     const r = ensure();
     if (!r) return;
+    if (typeof window !== 'undefined' && window.isSecureContext === false) {
+      // Browsers refuse the microphone on plain-http pages other than localhost (e.g. a phone on the LAN IP).
+      setErrorCode('insecure-context');
+      setError(errorText('insecure-context'));
+      setBlocked(true);
+      setState('error');
+      return;
+    }
     setError(null);
+    setErrorCode(null);
+    setHint(null);
+    silentSessions.current = 0;
     want.current = true;
     try {
       r.start();
@@ -122,6 +185,7 @@ export function useSpeech() {
   const pause = useCallback(() => {
     want.current = false;
     rec.current?.stop();
+    setHint(null);
     setState('paused');
   }, []);
 
@@ -141,7 +205,7 @@ export function useSpeech() {
     [],
   );
 
-  return { supported: !!Ctor, state, finalText, setFinalText, interim, speaking, error, blocked, start, pause, reset };
+  return { supported: !!Ctor, state, finalText, setFinalText, interim, speaking, error, errorCode, hint, blocked, start, pause, reset };
 }
 
 export function joinText(a: string, b: string): string {

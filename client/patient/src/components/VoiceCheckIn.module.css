@@ -244,3 +244,30 @@
   align-items: flex-start;
   gap: var(--sp-3);
 }
+/* .qText's 14em flex-basis is for row layouts; in this column it would become a 224px-tall heading. */
+.attach > .qText {
+  flex: none;
+}
+
+/* Live microphone level while listening. */
+.meter {
+  width: min(220px, 70%);
+  height: 6px;
+  border-radius: 999px;
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+.meter > span {
+  display: block;
+  height: 100%;
+  background: var(--good);
+  transform-origin: left center;
+  transition: transform 80ms linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  .meter > span { transition: none; }
+}
+.errCode {
+  opacity: 0.75;
+  font-size: var(--fs-xs);
+}

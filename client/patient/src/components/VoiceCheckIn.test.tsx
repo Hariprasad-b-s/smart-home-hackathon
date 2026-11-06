@@ -96,7 +96,8 @@ describe('VoiceCheckIn', () => {
     rec.say("I'm feeling okay. I've been coughing.");
     // The browser ends the session after silence: we restart while still recording.
     act(() => rec.onend?.());
-    expect(rec.start).toHaveBeenCalledTimes(2);
+    // The restart is deferred (an immediate start() inside onend can throw in Chrome).
+    await waitFor(() => expect(rec.start).toHaveBeenCalledTimes(2));
     fireEvent.click(screen.getByRole('button', { name: 'Pause recording' }));
     expect(rec.stop).toHaveBeenCalled();
 
@@ -171,7 +172,7 @@ describe('VoiceCheckIn', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Start talking' }));
     act(() => FakeRecognition.instances[0].onerror?.({ error: 'not-allowed' }));
     expect(screen.getByRole('heading', { name: 'Type how today went' })).toBeInTheDocument();
-    expect(screen.getByRole('alert')).toHaveTextContent(/blocked the microphone/);
+    expect(screen.getByRole('alert')).toHaveTextContent(/Microphone access is blocked/);
   });
 
   it('shows the safety banner at the top of the review with call links', async () => {

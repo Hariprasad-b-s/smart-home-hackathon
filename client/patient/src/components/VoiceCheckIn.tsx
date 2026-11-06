@@ -10,6 +10,7 @@ import { api } from '../api';
 import { toApiError } from '../lib/errors';
 import { buildCheckInRequest, decodeAnswer, isAnswered, numberError, sortedQuestions, type Answers, type AnswerValue } from '../lib/encode';
 import { exampleSentence, speakPrompts } from '../lib/prompts';
+import { micProblemText, useMicLevel } from '../lib/micLevel';
 import { joinText, useSpeech } from '../lib/speech';
 import { localIso } from '../lib/time';
 import { useOptionalChat } from '../lib/chat';
@@ -36,6 +37,7 @@ export interface VoiceCheckInProps {
 
 export function VoiceCheckIn({ tracker, patientId, today, spirometer, actionPlan, onExit, onSubmitted }: VoiceCheckInProps) {
   const speech = useSpeech();
+  const mic = useMicLevel(speech.state === 'listening');
   const aiStatus = useOptionalChat()?.aiStatus ?? null;
   const [typing, setTyping] = useState(!speech.supported);
   const [phase, setPhase] = useState<Phase>('talk');
@@ -251,6 +253,7 @@ export function VoiceCheckIn({ tracker, patientId, today, spirometer, actionPlan
   // ── Talk / type ─────────────────────────────────────────────────────────────
   const prompts = speakPrompts(tracker);
   const listening = speech.state === 'listening';
+  const micTip = micProblemText(mic.problem) ?? (listening ? speech.hint : null);
   return (
     <div className={s.wrap}>
       {header}
@@ -284,9 +287,20 @@ export function VoiceCheckIn({ tracker, patientId, today, spirometer, actionPlan
           <p className={s.micLabel} aria-live="polite">
             {listening ? "Listening… tap to pause" : transcript ? 'Paused. Tap to keep talking' : 'Tap the microphone and start talking'}
           </p>
+          {listening && (
+            <div className={s.meter} role="meter" aria-label="Microphone level" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(mic.level * 100)}>
+              <span style={{ transform: `scaleX(${Math.max(0.02, mic.level)})` }} />
+            </div>
+          )}
+          {micTip && !speech.error && (
+            <p className={ui.note} role="status">
+              {micTip}
+            </p>
+          )}
           {speech.error && (
             <p className={ui.inlineError} role="alert">
               {speech.error}
+              {speech.errorCode && <span className={s.errCode}> (code: {speech.errorCode})</span>}
             </p>
           )}
         </div>

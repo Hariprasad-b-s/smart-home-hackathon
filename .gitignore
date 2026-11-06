@@ -15,3 +15,6 @@ docs/*.pdf
 .env
 .env.*
 !.env.example
+
+# Local sample media for demo uploads (third-party images: not redistributed)
+samples_photos/
