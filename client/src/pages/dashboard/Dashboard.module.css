@@ -227,7 +227,8 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--sp-4);
-  align-items: start;
+  /* Stretch so two half-width cards in the same row get equal heights. */
+  align-items: stretch;
 }
 @media (min-width: 1280px) {
   .grid {
@@ -931,6 +932,12 @@
 }
 .cellHalf {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+/* The panel (or edit frame) fills the stretched cell, so side-by-side cards line up top and bottom. */
+.cellHalf > * {
+  flex: 1 1 auto;
 }
 .newData {
   position: sticky;
