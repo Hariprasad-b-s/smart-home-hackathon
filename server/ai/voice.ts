@@ -3,7 +3,7 @@
  * CreateTrackerResponseRequest values. Nothing is saved; the patient reviews and submits.
  *
  * Claude path: structured outputs (`output_config.format` json_schema generated from the
- * TrackerDefinition) at effort "medium". Any failure (no credentials, network, refusal,
+ * TrackerDefinition) at engine.effort. Any failure (no credentials, network, refusal,
  * max_tokens, invalid output, rate limit) falls back to the rule engine (engine: 'rules').
  */
 import type { SafetyNotice, VoiceParsedAnswer, VoiceParseResult } from '../../shared/types/api';
@@ -216,7 +216,7 @@ export function voiceRequest(engine: AiEngine, tracker: TrackerDefinition, trans
     max_tokens: 4096,
     system: [{ type: 'text', text: VOICE_SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
     thinking: { type: 'adaptive' },
-    output_config: { effort: 'medium', format: { type: 'json_schema', schema: voiceSchema(tracker) } },
+    output_config: { effort: engine.effort, format: { type: 'json_schema', schema: voiceSchema(tracker) } },
     messages: [{ role: 'user', content: userPrompt(tracker, transcript) }],
   };
 }

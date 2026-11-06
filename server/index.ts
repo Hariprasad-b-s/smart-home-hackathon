@@ -2,12 +2,17 @@
  * Server entry point. Dev: `tsx watch server/index.ts` (port 8787, Vite proxies /api).
  * Production (NODE_ENV=production): also serves client/dist with an SPA fallback.
  */
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createApp } from './app';
 import { createStore } from './data/store';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
+
+// Local secrets (ANTHROPIC_API_KEY, SMART_HOME_AI_*) live in a gitignored .env at the repo root.
+const envFile = path.resolve(here, '../.env');
+if (existsSync(envFile)) process.loadEnvFile(envFile);
 const production = process.env.NODE_ENV === 'production';
 const port = Number(process.env.PORT) || 8787;
 

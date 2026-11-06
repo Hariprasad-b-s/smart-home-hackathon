@@ -52,8 +52,8 @@ describe('replyToPatient with Claude (fake client)', () => {
     expect(reply.suggestedActions).toContain('check_in');
 
     const req = client.calls[0] as unknown as Record<string, any>;
-    expect(req.model).toBe('claude-opus-5-5');
-    expect(req.output_config).toEqual({ effort: 'low' });
+    expect(req.model).toBe('claude-sonnet-5-5');
+    expect(req.output_config).toEqual({ effort: 'medium' });
     expect(req.thinking).toEqual({ type: 'adaptive' });
     expect(req.betas).toEqual(['server-side-fallback-2026-07-01']);
     expect(req.fallbacks).toBe('default');
@@ -92,6 +92,32 @@ describe('replyToPatient with Claude (fake client)', () => {
     expect(reply.escalate).toEqual({ reason: 'Asks about taking extra puffs', urgency: 'soon', summary: 'Patient asks whether to take 4 extra puffs.' });
     expect(reply.text).toMatch(/care team/);
     expect(reply.suggestedActions ?? []).not.toContain('talk_to_care_team');
+  });
+
+  it('uses message_to_patient from the tool call when there is no text block', async () => {
+    const client = fakeClient(
+      fakeMessage(
+        [
+          {
+            type: 'tool_use',
+            id: 'tu2',
+            name: 'escalate_to_care_team',
+            input: {
+              reason: 'Throat soreness from controller',
+              urgency: 'soon',
+              summary_for_clinician: 'Sore throat on Flovent; asks to stop for a week.',
+              message_to_patient: "You're in the yellow zone today, so keep following those steps. I'm sharing this with your care team so they can help with the sore throat.",
+            },
+          },
+        ],
+        'tool_use',
+      ),
+    );
+    const reply = await replyToPatient(conv('my flovent makes my throat sore, can I stop it?'), ctx, fakeEngine(client));
+    expect(reply.text).toMatch(/^You're in the yellow zone today/);
+    expect(reply.escalate?.urgency).toBe('soon');
+    const tools = (client.calls[0].tools ?? []) as unknown as { name?: string; input_schema?: { required?: string[] } }[];
+    expect(tools.find((t) => t.name === 'escalate_to_care_team')?.input_schema?.required).toContain('message_to_patient');
   });
 
   it('refusal falls back to rules', async () => {

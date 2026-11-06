@@ -155,7 +155,7 @@ describe('voice check-in: Claude path (fake client)', () => {
     expectValid(TRACKER_IDS.asthma, r);
 
     const req = client.calls[0] as unknown as Record<string, any>;
-    expect(req.model).toBe('claude-opus-5-5');
+    expect(req.model).toBe('claude-sonnet-5-5');
     expect(req.betas).toEqual(['server-side-fallback-2026-07-01']);
     expect(req.fallbacks).toBe('default');
     expect(req.output_config.effort).toBe('medium');

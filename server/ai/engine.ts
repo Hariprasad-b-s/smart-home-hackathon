@@ -11,7 +11,11 @@
 import Anthropic from '@anthropic-ai/sdk';
 import type { AiStatus } from '../../shared/types/api';
 
-export const CLAUDE_MODEL = 'claude-opus-5-5';
+/** Default model and effort; override with SMART_HOME_AI_MODEL / SMART_HOME_AI_EFFORT. */
+export const CLAUDE_MODEL = 'claude-sonnet-5-5';
+export const CLAUDE_EFFORT: AiEffort = 'medium';
+export type AiEffort = 'low' | 'medium' | 'high' | 'xhigh' | 'max';
+const EFFORTS: AiEffort[] = ['low', 'medium', 'high', 'xhigh', 'max'];
 export const AI_NOTICE = 'Demo AI on synthetic data. Not for real patient information. Not medical advice.';
 /** Server-side refusal fallback ("default" routing by refusal category). */
 export const FALLBACK_BETA = 'server-side-fallback-2026-07-01';
@@ -57,6 +61,8 @@ export interface AiEngine {
   /** null → rule engine only. */
   client: ClaudeClient | null;
   model: string;
+  /** output_config.effort for every request (chat and voice). */
+  effort: AiEffort;
   limiter: RateLimiter;
   status(): AiStatus;
 }
@@ -83,11 +89,15 @@ export function createAiEngine(opts: AiEngineOptions = {}): AiEngine {
     const authToken = env.ANTHROPIC_AUTH_TOKEN?.trim() || null;
     client = sdkClaudeClient(new Anthropic({ apiKey, authToken, timeout: 30_000, maxRetries: 1 }));
   }
+  const model = env.SMART_HOME_AI_MODEL?.trim() || CLAUDE_MODEL;
+  const wanted = env.SMART_HOME_AI_EFFORT?.trim().toLowerCase() as AiEffort | undefined;
+  const effort: AiEffort = wanted && EFFORTS.includes(wanted) ? wanted : CLAUDE_EFFORT;
   return {
     client,
-    model: CLAUDE_MODEL,
+    model,
+    effort,
     limiter: opts.limiter ?? createRateLimiter(),
-    status: () => (client ? { engine: 'claude', model: CLAUDE_MODEL, notice: AI_NOTICE } : { engine: 'rules', notice: AI_NOTICE }),
+    status: () => (client ? { engine: 'claude', model, notice: AI_NOTICE } : { engine: 'rules', notice: AI_NOTICE }),
   };
 }
 

@@ -10,3 +10,8 @@ server/data/runtime/
 
 # Hackathon materials from Cincinnati Children's: local only, not redistributed
 docs/*.pdf
+
+# Local secrets
+.env
+.env.*
+!.env.example
